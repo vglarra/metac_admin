@@ -42,7 +42,7 @@ const App = () => {
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
         <Link to={"/"} className="navbar-brand">
-          metatok
+          metacoinz
         </Link>
         <div className="navbar-nav mr-auto">
           <li className="nav-item">
@@ -78,7 +78,7 @@ const App = () => {
           {currentUser && (
             <li className="nav-item">
               <Link to={"/expense"} className="nav-link">
-                expense
+                Money
               </Link>
             </li>
           )}      

@@ -23,11 +23,11 @@ export const IncomeExpenses = () => {
     <Container>
       <Row>
         <Col>
-          <h4>Income</h4>
+          <h4>Ingresos</h4>
           <p className="money plus">{income}</p>
         </Col>
         <Col>
-          <h4>Expense</h4>
+          <h4>Gastos</h4>
           <p className="money minus">{expense}</p>
         </Col>
       </Row>
