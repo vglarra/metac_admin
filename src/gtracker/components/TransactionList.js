@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { FormCheck } from "react-bootstrap";
+import { DropdownButton, Dropdown } from "react-bootstrap";
 import { Alert } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { Row } from "react-bootstrap";
@@ -7,7 +7,8 @@ import { Col } from "react-bootstrap";
 import { ListGroup } from "react-bootstrap";
 import { GlobalContext } from "../context/GlobalState";
 import dbCallGasto from "../../services/db-services/user.gasto.model";
-import "./transactionList.css";
+import { GastoTable } from "./tables/GastoTable";
+import "./transactionLst.css";
 
 export const TransactionList = () => {
   const [gasto, setGasto] = useState([]);
@@ -29,7 +30,13 @@ export const TransactionList = () => {
           setIsEmpty(false);
           var obj = response.data;
           var gastoArray = Object.keys(obj).map((key) => obj[key])[0];
-          setGasto(gastoArray);
+          //setGasto(gastoArray);
+          //alert(JSON.stringify(gastoArray));
+          const data = gastoArray.map((gastos) => ({
+            desc: gastos.ttg_des_gas,
+            monto: monedas(gastos.tgu_mon_gas),
+          }));
+          setGasto(data);
         }
 
         revStateGastoLst();
@@ -62,55 +69,36 @@ export const TransactionList = () => {
     return formatter.format(amount);
   };
 
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "Desc",
+        accessor: "desc",
+      },
+      {
+        Header: "Monto",
+        accessor: "monto",
+      },
+    ],
+    []
+  );
+
   return (
     <>
-      <h3>Historial</h3>
       <Container>
-      <Row>
-      <Col sm={12}>
-      <Alert  variant="secondary">
-        This is a alert—check it out!
-      </Alert>
-      </Col>
- 
-      </Row>
         <Row>
           <Col>
             {isEmpty ? (
-                <Alert variant="info" >
+              <Alert variant="info">
                 <p>
-                  <strong>{emptyMessage}..</strong> debes crear un tipo de gasto!
+                  <strong>{emptyMessage}..</strong> debes crear un tipo de
+                  gasto!
                 </p>
               </Alert>
             ) : (
-              <ListGroup>
-                {gasto.map((gastos) => (
-                  <ListGroup.Item
-                    as="li"
-                    action
-                    variant="light"
-                    key={gastos.tgu_cod_gas}
-                  >
-                    <Row>
-                    <Col sm={1}>
-                        <input
-                            type="checkbox"
-                            //value={label}
-                            //checked={isChecked}
-                            //onChange={this.toggleCheckboxChange}
-                        />
-                      </Col>
-                      <Col sm={2}>
-                        { gastos.ttg_des_gas }
-                      </Col>
-                      <Col sm={2}>
-                        { monedas(gastos.tgu_mon_gas) + " $" }
-                      </Col>
-                    </Row>
-
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
+              <div className="react-table-gas">
+                <GastoTable columns={columns} data={gasto} />
+              </div>
             )}
           </Col>
         </Row>
@@ -118,3 +106,29 @@ export const TransactionList = () => {
     </>
   );
 };
+
+{
+  /* <ListGroup>
+{gasto.map((gastos) => (
+  <ListGroup.Item
+    as="li"
+    action
+    variant="light"
+    key={gastos.tgu_cod_gas}
+  >
+    <Row>
+      <Col sm={1}>
+        <input
+          type="checkbox"
+          //value={label}
+          //checked={isChecked}
+          //onChange={this.toggleCheckboxChange}
+        />
+      </Col>
+      <Col sm={2}>{gastos.ttg_des_gas}</Col>
+      <Col sm={2}>{monedas(gastos.tgu_mon_gas) + " $"}</Col>
+    </Row>
+  </ListGroup.Item>
+))}
+</ListGroup> */
+}
