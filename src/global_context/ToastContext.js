@@ -15,7 +15,8 @@ import React, {
     confirma: false,
     triggerToast: () => {},
   };
-  
+
+ 
   export const ToastContext = createContext({});
   
   export const ToastProvider = ({children}) => {
@@ -30,6 +31,7 @@ import React, {
       setToastService({...toastService, visible: false });
     }, [toastService]);
 
+
     const displayToast = () => {
       //console.log('click');
 
@@ -38,7 +40,12 @@ import React, {
   
     return (
       <ToastContext.Provider
-        value={{ hide, showToast, toastService, triggerToast: displayToast }}
+        value={{ 
+          hide, 
+          showToast, 
+          toastService, 
+          triggerToast: displayToast,
+        }}
         >
         {children}
       </ToastContext.Provider>

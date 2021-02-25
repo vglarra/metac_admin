@@ -1,5 +1,7 @@
 import axios from "axios";
 
+
+
 const API_URL = "http://node.humanapp.space:5000/api/auth/";
 
 const register = (username, email, password) => {
@@ -11,6 +13,7 @@ const register = (username, email, password) => {
 };
 
 const login = (email, password) => {
+
   return axios
     .post(API_URL + "signin", {
       email,
@@ -18,7 +21,7 @@ const login = (email, password) => {
     })
     .then((response) => {
       if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
+        window.localStorage.setItem("user", JSON.stringify(response.data));
       }
 
       return response.data;
@@ -26,11 +29,11 @@ const login = (email, password) => {
 };
 
 const logout = () => {
-  localStorage.removeItem("user");
+  window.localStorage.removeItem("user");
 };
 
 const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
+  return JSON.parse(window.localStorage.getItem("user"));
 };
 
 export default {
@@ -39,3 +42,5 @@ export default {
   logout,
   getCurrentUser,
 };
+
+

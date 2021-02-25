@@ -7,7 +7,6 @@ import { isEmail } from "validator";
 import AuthService from "../services/auth.service";
 
 const Register = (props) => {
-
   const form = useRef();
   const checkBtn = useRef();
 
@@ -65,7 +64,7 @@ const Register = (props) => {
     <div className="col-md-12">
       <div className="card card-container">
         <img
-          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+          src={require("./images/metacoinz3.jpg")}
           alt="profile-img"
           className="profile-img-card"
         />
@@ -110,7 +109,12 @@ const Register = (props) => {
               </div>
 
               <div className="form-group">
-                <button className="btn btn-primary btn-block">Sign Up</button>
+                <button
+                  className="btn btn-primary btn-block"
+                  style={{ backgroundColor: "#6bff6b", outline: 'none'}}
+                >
+                  <div style={{ color: "black" }}>Sign Up</div>
+                </button>
               </div>
             </div>
           )}
@@ -118,7 +122,9 @@ const Register = (props) => {
           {message && (
             <div className="form-group">
               <div
-                className={ successful ? "alert alert-success" : "alert alert-danger" }
+                className={
+                  successful ? "alert alert-success" : "alert alert-danger"
+                }
                 role="alert"
               >
                 {message}
@@ -131,7 +137,6 @@ const Register = (props) => {
     </div>
   );
 };
-
 
 const required = (value) => {
   if (!value) {

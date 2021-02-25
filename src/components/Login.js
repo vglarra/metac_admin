@@ -1,18 +1,22 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
+import { useHistory } from 'react-router-dom'
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
+import { ContextApp } from "../global_context/ContexAppGlobal";
 
-import AuthService from "../services/auth.service";
+import Credentials from "../services/auth.service";
 
-const Login = (props) => {
+const Login = () => {
   const form = useRef();
   const checkBtn = useRef();
+  const { resetOn, resetOff } = useContext(ContextApp);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  let history = useHistory();
 
   const onChangeEmail = (e) => {
     const email = e.target.value;
@@ -33,10 +37,14 @@ const Login = (props) => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      AuthService.login(email, password).then(
+      
+      Credentials.login( email, password ).then(
         () => {
-          props.history.push("/profile");
-          window.location.reload();
+          resetOn();
+          history.push('/profile');
+
+          // props.history.push("/profile");
+          // window.location.reload();
         },
         (error) => {
           const resMessage =
@@ -59,7 +67,7 @@ const Login = (props) => {
     <div className="col-md-12">
       <div className="card card-container">
         <img
-          src={require('./images/me-tok_2x.png')}
+          src={require("./images/metacoinz3.jpg")}
           alt="profile-img"
           className="profile-img-card"
         />
@@ -90,11 +98,17 @@ const Login = (props) => {
           </div>
 
           <div className="form-group">
-            <button className="btn btn-primary btn-block" disabled={loading}>
+            <button
+              className="btn btn-primary btn-block"
+              disabled={loading}
+              style={{ backgroundColor: "#6bff6b" }}
+            >
               {loading && (
                 <span className="spinner-border spinner-border-sm"></span>
               )}
-              <span>Login</span>
+              <span>
+                <div style={{ color: "black" }}>Login</div>
+              </span>
             </button>
           </div>
 

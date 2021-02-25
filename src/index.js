@@ -1,15 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-
+import { ContextAppProvider } from "./global_context/ContexAppGlobal";
 
 //import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import App from "./App";
+import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+<ContextAppProvider>
+      <App />
+      </ContextAppProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );

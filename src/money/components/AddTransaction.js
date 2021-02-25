@@ -3,14 +3,14 @@ import { Col } from "react-bootstrap";
 import { Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import { GlobalContext } from "../context/GlobalState";
+import { GlobalContext } from "../context/MoneyGlobalState";
 import dbCallTipoGasto from "../../services/db-services/user.tipoGasto.model";
 import dbCallGasto from "../../services/db-services/user.gasto.model";
 import ModalLstTipGas from "./ModalLstTipGas";
 import "./addTransaction.css";
-import { TransactionList } from "./TransactionList";
 import Swal from "sweetalert2";
-import { ToastContext } from "../context/ToastContext";
+import { ToastContext } from "../../global_context/ToastContext";
+import AuthService from "../../services/auth.service";
 
 export const AddTransaction = () => {
   const { reloadGastoLst, revStateComboxTipGas, updateService } = useContext(
@@ -24,13 +24,15 @@ export const AddTransaction = () => {
   const [tipoGasto, setTipoGasto] = useState([]);
   const [modalShow, setModalShow] = React.useState(false);
 
+  const currentUser = AuthService.getCurrentUser();
+
   useEffect(() => {
     funcCsuTipGas();
   }, [updateService.refreshStateTipoGasto]);
 
   const funcCsuTipGas = () => {
     //setTipoGasto([]);
-    dbCallTipoGasto.postCsuTipGas().then(
+    dbCallTipoGasto.postCsuTipGas(currentUser.id).then(
       (response) => {
         if (!response.data["data"]) {
           setIsEmpty(true);
@@ -76,7 +78,7 @@ export const AddTransaction = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    dbCallGasto.grabarGasto(codGasto, amount).then(
+    dbCallGasto.grabarGasto(currentUser.id, codGasto, amount).then(
       (response) => {
         var obj = response.data;
         var gastoArray = Object.keys(obj).map((key) => obj[key])[0];

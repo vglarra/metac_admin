@@ -1,22 +1,11 @@
 import React, { useState, useEffect } from "react";
-
 import UserService from "../services/user.service";
+import bgimage from './images/metaconz_back_land2.jpg';
 
-const initialList = [
-  {
-    id: 'a',
-    name: 'Robin',
-  },
-  {
-    id: 'b',
-    name: 'Dennis',
-  },
-];
 
 const Home = () => {
   const [content, setContent] = useState("");
-  const [list, setList] = React.useState(initialList);
-  const [name, setName] = React.useState('');
+  const [name, setName] = React.useState("");
 
   useEffect(() => {
     UserService.getPublicContent().then(
@@ -35,37 +24,11 @@ const Home = () => {
   }, []);
 
 
-  function handleChange(event) {
-    setName(event.target.value);
-    // track input field's state
-  }
- 
-  function handleAdd() {
-    // add item
-    const newList = list.concat({ name });
-    alert(JSON.stringify(newList));
- 
-    setList(newList);
-  }
-
   return (
     <div className="container">
-      <header className="jumbotron">
-        <h3>{content}</h3>
+      <header className="jumbotron" style={{ backgroundImage: `url(${bgimage})`, backgroundSize: 'cover', height: 500 }}>
+        <h3 style={{ textAlign: 'right' }}>{content}</h3>
       </header>
-      <div>
-      <input type="text" value={name} onChange={handleChange} />
-        <button type="button" onClick={handleAdd}>
-          Add
-        </button>
-      </div>
- 
-      <ul>
-        {list.map((item) => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
-
     </div>
   );
 };

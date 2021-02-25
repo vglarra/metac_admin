@@ -8,10 +8,11 @@ import { Col } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import DbUserService from "../../services/db-services/user.tipoGasto.model";
-import { GlobalContext } from "../context/GlobalState";
-import { ToastContext } from "../context/ToastContext";
+import { GlobalContext } from "../context/MoneyGlobalState";
+import { ToastContext } from "../../global_context/ToastContext";
 import Swal from "sweetalert2";
 import "./modalLstTipGas.css";
+import AuthService from "../../services/auth.service";
 
 function ModalLstTipGas(props) {
   const { showToast } = useContext(ToastContext);
@@ -23,6 +24,8 @@ function ModalLstTipGas(props) {
   const [tipoGasto, setTipoGasto] = useState([]);
   const [showModifyButton, setShowModifyButton] = useState(false);
 
+  const currentUser = AuthService.getCurrentUser();
+
   useEffect(() => {
     csuTipGasFunc();
   }, []);
@@ -32,7 +35,7 @@ function ModalLstTipGas(props) {
  */
   const csuTipGasFunc = () => {
     //setTipoGasto([]);
-    DbUserService.postCsuTipGas().then(
+    DbUserService.postCsuTipGas(currentUser.id).then(
       (response) => {
         if (!response.data["data"]) {
           setIsEmpty(true);
@@ -91,7 +94,7 @@ function ModalLstTipGas(props) {
         confirmButtonText: "OK",
       });
     } else {
-      DbUserService.grbTipGas(itemGasto).then(
+      DbUserService.grbTipGas(currentUser.id, itemGasto).then(
         (response) => {
           var obj = response.data;
           //setTipoGasto(result);
@@ -116,7 +119,7 @@ function ModalLstTipGas(props) {
   };
 
   const handleEliGas = (idItemGasIng) => {
-    DbUserService.delEliTipGas(idItemGasIng).then(
+    DbUserService.delEliTipGas(currentUser.id, idItemGasIng).then(
       (response) => {
         var obj = response.data;
         //setTipoGasto(result);
@@ -138,7 +141,7 @@ function ModalLstTipGas(props) {
   };
 
   const handleModify = () => {
-    DbUserService.actTipGas(idItemGasto, itemGasto).then(
+    DbUserService.actTipGas(currentUser.id, idItemGasto, itemGasto).then(
       (response) => {
         var obj = response.data;
         //setTipoGasto(result);

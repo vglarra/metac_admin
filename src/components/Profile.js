@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import AuthService from "../services/auth.service";
+//import { ContextApp } from "../global_context/ContexAppGlobal";
 
 const Profile = () => {
+  //const currentUser = useContext(ContextApp);
   const currentUser = AuthService.getCurrentUser();
 
   return (

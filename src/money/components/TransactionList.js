@@ -1,13 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
-import { DropdownButton, Dropdown } from "react-bootstrap";
 import { Alert } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { Row } from "react-bootstrap";
 import { Col } from "react-bootstrap";
-import { ListGroup } from "react-bootstrap";
-import { GlobalContext } from "../context/GlobalState";
+import { GlobalContext } from "../context/MoneyGlobalState";
 import dbCallGasto from "../../services/db-services/user.gasto.model";
 import { GastoTable } from "./tables/GastoTable";
+import AuthService from "../../services/auth.service";
 import "./transactionLst.css";
 
 export const TransactionList = () => {
@@ -16,12 +15,14 @@ export const TransactionList = () => {
   const [emptyMessage, setEmptyMessage] = useState("");
   const [isEmpty, setIsEmpty] = useState(false);
 
+  const currentUser = AuthService.getCurrentUser();
+
   useEffect(() => {
     funcCsuGasto();
   }, [updateService.refreshStateGasto]);
 
   const funcCsuGasto = () => {
-    dbCallGasto.postCsuGasto().then(
+    dbCallGasto.postCsuGasto(currentUser.id).then(
       (response) => {
         if (!response.data["data"]) {
           setIsEmpty(true);

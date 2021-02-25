@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Container } from 'react-bootstrap'
 import { Row } from 'react-bootstrap'
 import { Col } from 'react-bootstrap'
-import { GlobalContext } from '../context/GlobalState';
+import { GlobalContext } from '../context/MoneyGlobalState';
 
 export const IncomeExpenses = () => {
   const { transactions } = useContext(GlobalContext);

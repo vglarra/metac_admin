@@ -1,23 +1,21 @@
 import axios from "axios";
-import DbAuthHeader from "../db.auth-service";
-import AuthService from "../auth.service";
+import DbAuthHeader from "../auth-header";
 
-const currentUser = AuthService.getCurrentUser();
 const API_URL = "http://node.humanapp.space:5000/api/auth/";
 
-const postCsuTipGas = () => {
+const postCsuTipGas = (idUser) => {
   return axios.post(
     API_URL + "csu-tip-gas-usr",
-    { userId: currentUser.id },
+    { userId: idUser },
     { headers: DbAuthHeader() }
   );
 };
 
-const grbTipGas = (nameTipGas) => {
+const grbTipGas = (idUser, nameTipGas) => {
   return axios.post(
     API_URL + "grb-tip-gas-usr",
     {
-      userId: currentUser.id,
+      userId: idUser,
       ttg_des_gas: nameTipGas,
     },
     { headers: DbAuthHeader() }
@@ -25,20 +23,20 @@ const grbTipGas = (nameTipGas) => {
 };
 
 //eli-tip-gas-ing
-const delEliTipGas = (idTipGasto) => {
+const delEliTipGas = (idUser, idTipGasto) => {
   return axios.post(
     API_URL + "eli-tip-gas-usr",
-    { ttg_cod_gas: idTipGasto, userId: currentUser.id },
+    { ttg_cod_gas: idTipGasto, userId: idUser },
     { headers: DbAuthHeader() }
   );
 };
 
-const actTipGas = (idTipGasto, nameTipGasIng) => {
+const actTipGas = (idUser, idTipGasto, nameTipGasIng) => {
   return axios.post(
     API_URL + "act-tip-gas-usr",
     {
       ttg_cod_gas: idTipGasto,
-      userId: currentUser.id,
+      userId: idUser,
       new_des_gas: nameTipGasIng,
     },
     { headers: DbAuthHeader() }

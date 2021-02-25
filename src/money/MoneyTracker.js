@@ -8,7 +8,7 @@ import { Card } from 'react-bootstrap'
 import UserService from "../services/user.service";
 
 
-import { GlobalProvider } from './context/GlobalState';
+import { GlobalProvider } from './context/MoneyGlobalState';
 
 import '../App.css';
 

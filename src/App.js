@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-
 import AuthService from "./services/auth.service";
 
 import Login from "./components/Login";
@@ -12,27 +11,30 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
+import { ToastProvider } from "./global_context/ToastContext";
+import { ContextApp } from "./global_context/ContexAppGlobal";
+import Cheers from "./components/ToastConsumer";
 
-import {ToastProvider} from './money/context/ToastContext';
-import Saluu from './components/ToastConsumer';
-
-import ExpenseMod from "./money/moneyTracker"
-
+import Money from "./money/MoneyTracker";
 
 const App = () => {
+  const { resetService, resetOff,   } = useContext(ContextApp);
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
 
   useEffect(() => {
+    document.body.style.backgroundColor = "black";
     const user = AuthService.getCurrentUser();
-
+    
     if (user) {
+      alert(user.id + " " + user.roles);
       setCurrentUser(user);
       setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
-    }
-  }, []);
+    };
+
+  }, [resetService]);
 
   const logOut = () => {
     AuthService.logout();
@@ -54,7 +56,7 @@ const App = () => {
           {showModeratorBoard && (
             <li className="nav-item">
               <Link to={"/mod"} className="nav-link">
-                Moderator Board
+                Moderator
               </Link>
             </li>
           )}
@@ -62,7 +64,7 @@ const App = () => {
           {showAdminBoard && (
             <li className="nav-item">
               <Link to={"/admin"} className="nav-link">
-                Admin Board
+                Admin
               </Link>
             </li>
           )}
@@ -81,8 +83,7 @@ const App = () => {
                 Money
               </Link>
             </li>
-          )}      
-
+          )}
         </div>
 
         {currentUser ? (
@@ -116,24 +117,22 @@ const App = () => {
       </nav>
 
       <div className="container mt-3 fluid">
-      <ToastProvider>
-        <Switch>
-          <Route exact path={["/", "/home"]} component={Home} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/profile" component={Profile} />
-          <Route path="/user" component={BoardUser} />
-          <Route path="/mod" component={BoardModerator} />
-          <Route path="/admin" component={BoardAdmin} />
-          <Route path="/expense" component={ExpenseMod} />
-        </Switch>
-        <Saluu />
-      </ToastProvider >
+        <ToastProvider>
+          <Switch>
+            <Route exact path={["/", "/home"]} component={Home} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/profile" component={Profile} />
+            <Route path="/user" component={BoardUser} />
+            <Route path="/mod" component={BoardModerator} />
+            <Route path="/admin" component={BoardAdmin} />
+            <Route path="/expense" component={Money} />
+          </Switch>
+          <Cheers />
+        </ToastProvider>
       </div>
-      
     </div>
   );
 };
 
 export default App;
-
