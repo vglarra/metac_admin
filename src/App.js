@@ -3,7 +3,7 @@ import { Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import AuthService from "./services/auth.service";
-
+import Footer from './components/footer/Footer'
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
@@ -18,7 +18,7 @@ import Cheers from "./components/ToastConsumer";
 import Money from "./money/MoneyTracker";
 
 const App = () => {
-  const { resetService, resetOff,   } = useContext(ContextApp);
+  const { resetService, resetOn,   } = useContext(ContextApp);
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
@@ -28,7 +28,6 @@ const App = () => {
     const user = AuthService.getCurrentUser();
     
     if (user) {
-      alert(user.id + " " + user.roles);
       setCurrentUser(user);
       setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
@@ -38,6 +37,7 @@ const App = () => {
 
   const logOut = () => {
     AuthService.logout();
+    resetOn();
   };
 
   return (
@@ -94,7 +94,7 @@ const App = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <a href="/login" className="nav-link" onClick={logOut}>
+              <a href="/" className="nav-link" onClick={logOut}>
                 LogOut
               </a>
             </li>
@@ -128,6 +128,7 @@ const App = () => {
             <Route path="/admin" component={BoardAdmin} />
             <Route path="/expense" component={Money} />
           </Switch>
+          <Footer title={'metacoinz.com'} color={'#6bff6b'}/>
           <Cheers />
         </ToastProvider>
       </div>

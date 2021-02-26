@@ -5,12 +5,13 @@ import { ContextAppProvider } from "./global_context/ContexAppGlobal";
 
 //import './index.css';
 import App from "./App";
+import Hamburguer from "./components/hamburger/Hamburger"
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <BrowserRouter>
 <ContextAppProvider>
-      <App />
+      <Hamburguer />
       </ContextAppProvider>
   </BrowserRouter>,
   document.getElementById("root")
