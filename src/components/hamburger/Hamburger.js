@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+/*import React, { useState, useEffect, useContext } from "react";
 import MenuButton from "./MenuButton";
 import Menu from "./Menu";
 import MenuItem from "./MenuItem";
@@ -20,7 +20,7 @@ const Hamburguer = () => {
   const handleLinkClick = (val) => {
     
     setMenuOpen(false);
-    alert(val);
+    alert(val)
   };
 
   const styles = {
@@ -74,6 +74,8 @@ const Hamburguer = () => {
       </div>
       <Menu open={menuOpen}>{menuItems}</Menu>
       <div style={styles.body}>
+
+
         <div style={{ marginTop: "100px" }}>
           <h1>hola</h1>
         </div>
@@ -84,4 +86,4 @@ const Hamburguer = () => {
   );
 };
 
-export default Hamburguer;
+export default Hamburguer;*/
