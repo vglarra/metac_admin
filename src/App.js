@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback, useReducer } from "react";
 import { useHistory } from 'react-router-dom'
 import { Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -14,7 +14,6 @@ import { ToastProvider } from "./global_context/ToastContext";
 import { ContextApp } from "./global_context/ContexAppGlobal";
 import Cheers from "./components/ToastConsumer";
 import Money from "./money/MoneyTracker";
-
 import MenuButton from "./components/hamburger/MenuButton";
 import Menu from "./components/hamburger/Menu";
 import MenuItem from "./components/hamburger/MenuItem";
@@ -22,32 +21,76 @@ import Footer from "./components/footer/Footer";
 
 import "./App.css";
 
+
+const listaReducer = ({ elemento }, action) => {
+  switch (action.type) {
+    case "ADD_ELEMENTO": {
+      return {
+        elemento: action.elemento
+      };
+    }
+    // no default
+  }
+};
+
 const App = () => {
   const { resetService, resetOn } = useContext(ContextApp);
-  const [showModeratorBoard, setShowModeratorBoard] = useState(false);
-  const [showAdminBoard, setShowAdminBoard] = useState(false);
-  const [currentUser, setCurrentUser] = useState(undefined);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [state, dispatch] = useReducer(listaReducer, { elemento: [] });
+  const [currentUser, setCurrentUser] = useState(undefined);
+  const menu = ["Home",  "Login", "Sign Up"];
   let history = useHistory();
+  
 
   useEffect(() => {
     document.body.style.backgroundColor = "#404040";
     const user = AuthService.getCurrentUser();
+    const newArray = [];
 
     if (user) {
+      alert(menu);
       setCurrentUser(user);
-      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
-      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
-    }
+      menu.push('User');
+      if  (user.roles.includes("ROLE_MODERATOR")){
+        menu.push('Moderator');
+        //setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      };
+      if (user.roles.includes("ROLE_ADMIN")){
+        menu.push('Admin');
+        //setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+      };
+      var index = menu.indexOf('Login');
+      if (index !== -1) {
+        menu[index] = 'LogOut';
+      }; 
+    };
+
+    menu.forEach(function (item, index) {
+      newArray.push({ id: index, value: item }); 
+    });
+
+    const fetchElemento = () => {
+      return Promise.resolve({
+        data: newArray
+      });
+    };
+    fetchElemento().then(({ data }) =>
+      dispatch({ type: "ADD_ELEMENTO", elemento: data })
+    );
+
   }, [resetService]);
+
 
   const logOut = () => {
     AuthService.logout();
+    var index = menu.indexOf('LogOut');
+    if (index !== -1) {
+      menu[index] = 'Login';
+    }; 
     resetOn();
   };
 
   //-----------------Hamburguer--------------
-  const menu = ["Home", "Moderator", "Admin", "User", "Money", "Login", "LogOut", "Sign Up"];
 
   const handleMenuClick = () => {
     if (menuOpen) {
@@ -107,7 +150,6 @@ const App = () => {
       background: "#808080",
       width: "100%",
       color: "white",
-
       //fontFamily: "Lobster",
     },
     logo: {
@@ -124,21 +166,19 @@ const App = () => {
       paddingTop: '60px'
     },
   };
-  
-  const menuItems = menu.map((val, index) => {
+  const menuItems = state.elemento.map((val, index) => {
     return (
       <MenuItem
         key={index}
         delay={`${index * 0.1}s`}
         onClick={() => {
-          handleLinkClick(val);
+          handleLinkClick(val.value);
         }}
       >
-        {val}
+        {val.value}
       </MenuItem>
     );
   });
-
   //-----------------Hamburguer--------------
 
   return (

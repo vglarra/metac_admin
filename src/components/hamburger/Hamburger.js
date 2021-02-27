@@ -87,3 +87,42 @@ const Hamburguer = () => {
 };
 
 export default Hamburguer;*/
+
+
+import React, { useEffect, useReducer } from "react";
+
+const listaReducer = ({ elemento }, action) => {
+  switch (action.type) {
+    case "ADD_ELEMENTO": {
+      return {
+        elemento: action.elemento
+      };
+    }
+    // no default
+  }
+};
+const MealList = () => {
+  const [state, dispatch] = useReducer(listaReducer, { elemento: [] });
+
+  useEffect(() => {
+    const fetchElemento = () => {
+      return Promise.resolve({
+        data: [{ id: Math.floor(Math.random() * 100), name: "blabla" },
+        { id: Math.floor(Math.random() * 100), name: "hola" }]
+      });
+    };
+    fetchElemento().then(({ data }) =>
+      dispatch({ type: "ADD_ELEMENTO", elemento: data })
+    );
+  }, []);
+
+  return (
+    <ul>
+      {state.elemento.map((meal, index) => (
+        <li key={meal.id}>{meal.name}</li>
+      ))}
+    </ul>
+  );
+};
+
+export default MealList;
