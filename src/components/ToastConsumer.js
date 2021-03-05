@@ -1,26 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { ToastContext } from "../global_context/ToastContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import "./toastConsumer.css"
-import { Modal } from "react-bootstrap";
-import { Button } from "react-bootstrap";
-
-import Swal from "./SweetAletrt";
-
 
 
 export default function ToastConsumer() {
-  const { toastService, hide } = useContext(ToastContext);
-  const [isModal, setIsModal] = useState(false);
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  //const [toastId, setToastId] = useState(null)
+  const { toastService,} = useContext(ToastContext);
   let toastId = null;
 
-  
   useEffect(() => {
  
   if (toastService.visible) {

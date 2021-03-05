@@ -3,7 +3,7 @@ import React from "react";
 const Footer = (props) => {
   const styles = {
     footer: {
-      position: "absolute",
+      //position: "absolute",
       bottom: 0,
       width: "100%",
       marginTop: "1rem",

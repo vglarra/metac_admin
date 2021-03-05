@@ -1,18 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, } from "react";
 
 
-/* MenuItem.jsx*/
 const MenuItem = (props) => {
-    /*     constructor(props){
-        super(props);
-        this.state = {
-            hover:false,
-        }
-        } */
 
     const [hover, setHover] = useState(false);
     
     const handleHover = () => {
+        
         if (hover) {
             setHover(false);
         } else {
@@ -20,7 +14,6 @@ const MenuItem = (props) => {
         };
 
     };
-    
 
     const styles={
         container: {

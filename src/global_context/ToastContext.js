@@ -1,8 +1,6 @@
 import React, {
     createContext,
     useState,
-    useEffect,
-    useRef,
     useCallback,
   } from 'react';
   
@@ -21,7 +19,6 @@ import React, {
   
   export const ToastProvider = ({children}) => {
     const [toastService, setToastService] = useState(initialToast);
-    const timeout = useRef();
   
     const showToast = useCallback(args => {
       setToastService({...initialToast, visible: true, ...args});

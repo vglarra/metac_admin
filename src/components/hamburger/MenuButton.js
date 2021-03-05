@@ -1,9 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
+import { ContextApp } from "../../global_context/ContexAppGlobal";
+
+
 
 const MenuButton = (props) => {
-
+    const { menustate, buttonMenuOff } = useContext(ContextApp);
     const [open, setopen] = useState(false)
     const [color, setColor] = useState(props.color? props.color:'black');
+
+
+    useEffect(() => { 
+        if (menustate.buttonState){ 
+            setopen(false);
+            buttonMenuOff(); 
+        };
+    }, [menustate])
 
    
     const handleClick = () => {

@@ -1,7 +1,5 @@
 import React from "react";
 import { useTable } from "react-table";
-import Table from "react-bootstrap/Table";
-import styled from "styled-components";
 import "./table.css";
 
 // From https://codesandbox.io/s/github/tannerlinsley/react-table/tree/master/examples/basic?from-embed=&file=/src/App.js:1554-2298

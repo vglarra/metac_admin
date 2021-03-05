@@ -107,29 +107,3 @@ export const TransactionList = () => {
     </>
   );
 };
-
-{
-  /* <ListGroup>
-{gasto.map((gastos) => (
-  <ListGroup.Item
-    as="li"
-    action
-    variant="light"
-    key={gastos.tgu_cod_gas}
-  >
-    <Row>
-      <Col sm={1}>
-        <input
-          type="checkbox"
-          //value={label}
-          //checked={isChecked}
-          //onChange={this.toggleCheckboxChange}
-        />
-      </Col>
-      <Col sm={2}>{gastos.ttg_des_gas}</Col>
-      <Col sm={2}>{monedas(gastos.tgu_mon_gas) + " $"}</Col>
-    </Row>
-  </ListGroup.Item>
-))}
-</ListGroup> */
-}

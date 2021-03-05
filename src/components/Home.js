@@ -5,7 +5,6 @@ import bgimage from './images/metaconz_back_land2.jpg';
 
 const Home = () => {
   const [content, setContent] = useState("");
-  const [name, setName] = React.useState("");
 
   useEffect(() => {
     UserService.getPublicContent().then(
