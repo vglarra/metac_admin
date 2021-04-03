@@ -1,7 +1,7 @@
 import axios from "axios";
 import DbAuthHeader from "../auth-header";
 
-const API_URL = "http://node.humanapp.space:5000/api/auth/";
+const API_URL = `${process.env.REACT_APP_API_AUTH}/api/auth/`;
 
 const postCsuGasto = (idUser) => {
   return axios.post(

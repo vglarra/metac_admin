@@ -1,5 +1,5 @@
 {
-  "homepage": "http://test.humanapp.space/",
+  "homepage": "https://www.metacoinz.com/",
   "name": "test-humanapp",
   "version": "0.1.0",
   "private": true,
@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
+    "dotenv": "^6.0.0",
     "react": "^16.12.0",
     "react-bootstrap": "^1.4.0",
     "react-dom": "^16.12.0",
@@ -42,7 +43,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ],
-    "proxy": "http://node.humanapp.space:5000"
-    
+    "proxy": "http://www.metacoinz.com:5333"
   }
 }
