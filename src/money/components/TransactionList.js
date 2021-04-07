@@ -1,12 +1,16 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Alert } from "react-bootstrap";
 import { Container } from "react-bootstrap";
+import { ButtonGroup } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { Row } from "react-bootstrap";
 import { Col } from "react-bootstrap";
 import { GlobalContext } from "../context/MoneyGlobalState";
 import dbCallGasto from "../../services/db-services/user.gasto.model";
 import { GastoTable } from "./tables/GastoTable";
 import AuthService from "../../services/auth.service";
+import Swal from "sweetalert2";
+import { ToastContext } from "../../global_context/ToastContext";
 import "./transactionLst.css";
 
 export const TransactionList = () => {
@@ -14,6 +18,9 @@ export const TransactionList = () => {
   const { updateService, revStateGastoLst } = useContext(GlobalContext);
   const [emptyMessage, setEmptyMessage] = useState("");
   const [isEmpty, setIsEmpty] = useState(false);
+  const [selectedRows, setSelectedRows] = React.useState([]);
+  const { showToast } = useContext(ToastContext);
+  const [itemGastoDelMessage, setItemGastoDelMessage] = useState("");
 
   const currentUser = AuthService.getCurrentUser();
 
@@ -34,6 +41,7 @@ export const TransactionList = () => {
           //setGasto(gastoArray);
           //alert(JSON.stringify(gastoArray));
           const data = gastoArray.map((gastos) => ({
+            cod_gas: gastos.tgu_cod_gas,
             desc: gastos.ttg_des_gas,
             monto: monedas(gastos.tgu_mon_gas),
           }));
@@ -73,6 +81,10 @@ export const TransactionList = () => {
   const columns = React.useMemo(
     () => [
       {
+        Header: "Cod",
+        accessor: "cod_gas",
+      },
+      {
         Header: "Desc",
         accessor: "desc",
       },
@@ -83,6 +95,76 @@ export const TransactionList = () => {
     ],
     []
   );
+
+  const handleExpenseDelete = () => {
+    if (selectedRows.length === 0) {
+      Swal.fire({
+        title: "Alerta!",
+        text: "Debes seleccionar un item.",
+        icon: "warning",
+
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "OK",
+      });
+    } else {
+      let alertText = "";
+      if (selectedRows.length > 1) {
+        alertText =
+          "Esta Apunto de Borrar " + selectedRows.length + " registros...";
+      } else {
+        alertText =
+          "Esta Apunto de Borrar " + selectedRows.length + " registro...";
+      }
+      Swal.fire({
+        title: "¿Esta Segur@?",
+        text: alertText,
+        icon: "warning",
+        //showCancelButton: true,
+        showDenyButton: true,
+        confirmButtonText: "Si",
+        denyButtonText: "No eliminar",
+        //cancelButtonText: 'Cancelar',
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let cnt = 0;
+          for (let i = 0; i < selectedRows.length; i++) {
+            //alert(selectedRows[i].cod_gas);
+            cnt += 1;
+            var codGasto = selectedRows[i].cod_gas;
+            dbCallGasto.eliminarGasto(currentUser.id, codGasto).then(
+              (response) => {
+                //Queda el úlitmo mensaje
+                setItemGastoDelMessage(response.data["message"]);
+              },
+
+              (error) => {
+                const _content =
+                  (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                  error.message ||
+                  error.toString();
+
+                alert(_content);
+              }
+            );
+          };
+          funcCsuGasto();
+          if ( cnt === 1) {
+            showToast({ message: itemGastoDelMessage + " " + cnt + " Item" });
+          } else {
+            showToast({ message: itemGastoDelMessage + " " + cnt + " Items" });
+          };
+          setItemGastoDelMessage("");
+          
+        } else {
+          showToast({ message: "No se realizó la Eliminación" });
+        }
+      });
+    }
+  };
 
   return (
     <>
@@ -98,7 +180,28 @@ export const TransactionList = () => {
               </Alert>
             ) : (
               <div className="react-table-gas">
-                <GastoTable columns={columns} data={gasto} />
+                <ButtonGroup size="sm" className="mb-2">
+                  <Button variant="secondary" onClick={handleExpenseDelete}>
+                    Borrar
+                  </Button>
+                </ButtonGroup>
+                <GastoTable
+                  columns={columns}
+                  data={gasto}
+                  setSelectedRows={setSelectedRows}
+                />
+                <p>Filas seleccionadas: {selectedRows.length}</p>
+                {/*                 <pre>
+                  <code>
+                    {JSON.stringify(
+                      {
+                        selectedRows,
+                      },
+                      null,
+                      2
+                    )}
+                  </code>
+                </pre> */}
               </div>
             )}
           </Col>

@@ -28,7 +28,7 @@ const Footer = (props) => {
     <div style={styles.footer}>
       <div style={styles.line}></div>
       <div style={styles.text}>
-        {props.title} creado por victor larraguibel &copy; 2021
+        {props.title} por victor larraguibel &copy; 2021
       </div>
     </div>
   );

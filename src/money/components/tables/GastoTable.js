@@ -1,17 +1,26 @@
-import React from "react";
-import { useTable, useRowSelect } from "react-table";
+import React, { useEffect } from "react";
+import { useTable, useRowSelect, usePagination } from "react-table";
 import CheckBox from "./CheckBox";
+import { Button } from "react-bootstrap";
 import "./table.css";
 
 // From https://codesandbox.io/s/github/tannerlinsley/react-table/tree/master/examples/basic?from-embed=&file=/src/App.js:1554-2298
+// Controlled table by parent: https://spectrum.chat/react-table/general/v7-how-get-selected-rows-outside-of-react-table~2deb9558-c484-4b97-9e1c-6be608f1f275
 
-export const GastoTable = ({ columns, data }) => {
+export const GastoTable = ({ columns, data, setSelectedRows }) => {
+
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
+    page,
+    nextPage,
+    previousPage,
+    canNextPage,
+    canPreviousPage,
+    pageOptions,
+    state,
     prepareRow,
     selectedFlatRows,
   } = useTable(
@@ -19,6 +28,7 @@ export const GastoTable = ({ columns, data }) => {
       columns,
       data,
     },
+    usePagination,
     useRowSelect,
     (hooks) => {
       hooks.visibleColumns.push((columns) => {
@@ -38,6 +48,12 @@ export const GastoTable = ({ columns, data }) => {
     }
   );
 
+  const { pageIndex } = state;
+
+  useEffect(() => {
+    setSelectedRows(selectedFlatRows.map(row => row.original));
+  }, [setSelectedRows, selectedFlatRows]);
+
   // Render the UI for your table
   return (
     <div className="table-container">
@@ -52,7 +68,7 @@ export const GastoTable = ({ columns, data }) => {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row, i) => {
+          {page.map((row, i) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
@@ -66,17 +82,31 @@ export const GastoTable = ({ columns, data }) => {
           })}
         </tbody>
       </table>
-      <pre>
-        <code>
-          {JSON.stringify(
-            {
-              selectedFlatRows: selectedFlatRows.map((row) => row.original),
-            },
-            null,
-            2
-          )}
-        </code>
-      </pre>
+      <div className="pagination-div">
+        <span>
+          Pág.{" "}
+          <strong>
+            {pageIndex + 1} de {pageOptions.length}
+          </strong>{" "}
+        </span>
+        <Button
+          size="sm"
+          variant="secondary"
+          disabled={!canPreviousPage}
+          onClick={() => previousPage()}
+        >
+          Pág. Anterior
+        </Button>{" "}
+        <Button
+          size="sm"
+          variant="secondary"
+          disabled={!canNextPage}
+          onClick={() => nextPage()}
+        >
+          Siguiente
+        </Button>{" "}
+      </div>
+
     </div>
   );
 };

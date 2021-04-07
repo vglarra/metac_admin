@@ -203,9 +203,10 @@ const App = (props) => {
             <h2>metacoinz</h2>
           </div>
           <div style={styles.bicon}>
+          
             {currentUser ? (
               <Link to={"/profile"} onClick={renderSaludo}>
-                <div className="triangle-with-shadow"></div>
+                <div className="triangle-with-shadow"><div style={{color: "white", fontSize: "12px" }}>Dash:</div></div>
               </Link>
             ) : null}
           </div>

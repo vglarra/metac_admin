@@ -25,10 +25,10 @@ const grabarGasto = (idUser, codTipGas, monto) => {
 };
 
 //eli-tip-gas-ing
-const eliminarGasto = (idUser, idTipGasto) => {
+const eliminarGasto = (idUser, idGasto) => {
   return axios.post(
     API_URL + "eli-gas-usr",
-    { ttg_cod_gas: idTipGasto, userId: idUser },
+    { tgu_cod_gas: idGasto, userId: idUser },
     { headers: DbAuthHeader() }
   );
 };

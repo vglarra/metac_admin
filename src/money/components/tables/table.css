@@ -1,6 +1,6 @@
 .table-container {
   overflow: auto;
-  height: 200px;
+  height: 400px;
   border: 1px solid rgb(0, 0, 0);
 
 }
@@ -26,10 +26,20 @@ table th {
   padding-bottom: 12px; 
   text-align: left;
   background-color: #6bff6b;
-  color: white;
+  color: black;
   /*position sticky pega el header*/
   position: sticky;
   top: 0px; 
   box-shadow: 0 1px #dee2e6, 0 -1px #dee2e6;
 
+}
+
+.pagination-div {
+  padding-top: 9px;
+  padding-bottom: 9px;
+  padding-right: 5px;
+  background-color: #6bff6b;
+  bottom: 0px; 
+  text-align: right;
+  position: sticky;
 }
