@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useReducer } from "react";
 import { Alert } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { ButtonGroup } from "react-bootstrap";
@@ -13,7 +13,9 @@ import Swal from "sweetalert2";
 import { ToastContext } from "../../global_context/ToastContext";
 import "./transactionLst.css";
 
+
 export const TransactionList = () => {
+
   const [gasto, setGasto] = useState([]);
   const { updateService, revStateGastoLst } = useContext(GlobalContext);
   const [emptyMessage, setEmptyMessage] = useState("");
@@ -21,16 +23,17 @@ export const TransactionList = () => {
   const [selectedRows, setSelectedRows] = React.useState([]);
   const { showToast } = useContext(ToastContext);
   const [itemGastoDelMessage, setItemGastoDelMessage] = useState("");
-  const [clickNextPage, setClickNextPage] = React.useState(false);
-  const [clickPreviousPage, setClickPreviousPage] = React.useState(false);
-
-
-
+  const [reactTableInstance, setReactTableInstance] = React.useState([]);
+  const [canPreviousPage, setCanPreviousPage] = useState(null);
+  const [canNextPage, setCanNextPage] = useState(null);
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageOptions, setPageOptions] = useState(0);
   const currentUser = AuthService.getCurrentUser();
 
   useEffect(() => {
     funcCsuGasto();
   }, [updateService.refreshStateGasto]);
+
 
   const funcCsuGasto = () => {
     dbCallGasto.postCsuGasto(currentUser.id).then(
@@ -169,17 +172,27 @@ export const TransactionList = () => {
     }
   };
 
-  const handleNextPage = () => {
-    setClickNextPage(true);
-  };
-
   const handlePreviousPage = () => {
-    setClickPreviousPage(true);
+    reactTableInstance.previousPage();
+    setCanNextPage(reactTableInstance.canNextPage);
+    setCanPreviousPage(reactTableInstance.canPreviousPage);
   };
 
-  const reactTableInstance = (instance) => {
-    console.log("Here is the instance", instance);
+  const handleNextPage = () => {
+    reactTableInstance.nextPage();
+    setCanNextPage(reactTableInstance.canNextPage);
+    setCanPreviousPage(reactTableInstance.canPreviousPage);
   };
+
+  const reactTableInstanceSend = (instance) => {
+    setReactTableInstance(instance);
+      console.log("Here is the instance", instance);
+    setPageIndex(JSON.stringify(instance.state.pageIndex));
+    setPageOptions(JSON.stringify(instance.pageOptions.length));
+    setCanNextPage(reactTableInstance.canNextPage);
+    setCanPreviousPage(reactTableInstance.canPreviousPage);
+  };
+
 
   return (
     <>
@@ -204,26 +217,31 @@ export const TransactionList = () => {
                   columns={columns}
                   data={gasto}
                   setSelectedRows={setSelectedRows}
-                  clickNextPage={clickNextPage}
-                  clickPreviousPage={clickPreviousPage}
-                  getInstanceCallback={reactTableInstance}
+                  getInstanceCallback={reactTableInstanceSend}
 
                 />
-                <ButtonGroup size="sm" className="mb-2">
-                  <Button variant="secondary" 
-                  onClick={handlePreviousPage}
 
+                <div className="-pagination" >
+                  <button className="-btn -previous"
+                    onClick={handlePreviousPage}
+                    disabled={!canPreviousPage}
                   >
-                    Pág. Anterior
-                  </Button>
-                  <Button 
-                  variant="secondary" 
-                  onClick={handleNextPage}
+                    <strong>{"<"}</strong>
+                  </button>{' '}
+                  <span className="-pageInfo">
+                  Pág.{' '}
+                  <strong>
+                    {parseInt(pageIndex) + 1} de {pageOptions}
+                  </strong>
+                </span>{' '}
+                  <button className="-btn -next"
+                    onClick={handleNextPage}
+                    disabled={!canNextPage}
+                  >
+                   <strong>{">"}</strong>
+                  </button>
+                </div>
 
-                  >
-                    Siguiente
-                  </Button>
-                </ButtonGroup>
                 <p>Filas seleccionadas: {selectedRows.length}</p>
                 {/*                 <pre>
                   <code>

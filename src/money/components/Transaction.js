@@ -3,6 +3,7 @@ import { GlobalContext } from '../context/GlobalState';
 import { Container } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 
+
 export const Transaction = ({ transaction }) => {
   const { deleteTransaction } = useContext(GlobalContext);
 

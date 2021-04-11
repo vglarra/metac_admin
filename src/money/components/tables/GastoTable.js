@@ -12,7 +12,7 @@ const useInstance = (instance) => {
   }
 };
 
-export const GastoTable = ({ columns, data, setSelectedRows, clickNextPage, clickPreviousPage, getInstanceCallback }) => {
+export const GastoTable = ({ columns, data, setSelectedRows, getInstanceCallback, }) => {
 
   // Use the state and functions returned from useTable to build your UI
   const {
@@ -20,12 +20,12 @@ export const GastoTable = ({ columns, data, setSelectedRows, clickNextPage, clic
     getTableBodyProps,
     headerGroups,
     page,
-    nextPage,
-    previousPage,
-    canNextPage,
-    canPreviousPage,
-    pageOptions,
-    state,
+    //nextPage,
+    //previousPage,
+    //canNextPage,
+    //canPreviousPage,
+    //pageOptions,
+    //state,
     prepareRow,
     selectedFlatRows,
 
@@ -33,45 +33,40 @@ export const GastoTable = ({ columns, data, setSelectedRows, clickNextPage, clic
     {
       columns,
       data,
-      getInstanceCallback,  
+      getInstanceCallback, 
+
     },
     usePagination,
     useRowSelect,
     (hooks) => {
+      hooks.useInstance.push(useInstance);
+    },
+    (hooks) => {
       
-    /*   hooks.visibleColumns.push((columns) => {
-        return [
-          {
-            id: "selection",
-            Header: ({ getToggleAllRowsSelectedProps }) => (
-              <CheckBox {...getToggleAllRowsSelectedProps()} />
-            ),
-            Cell: ({ row }) => (
-              <CheckBox {...row.getToggleRowSelectedProps()} />
-            ),
-          },
-          ...columns,
-        ];
-      }), */ hooks.useInstance.push(useInstance);
-    }
+      hooks.visibleColumns.push((columns) => {
+          return [
+            {
+              id: "selection",
+              Header: ({ getToggleAllRowsSelectedProps }) => (
+                <CheckBox {...getToggleAllRowsSelectedProps()} />
+              ),
+              Cell: ({ row }) => (
+                <CheckBox {...row.getToggleRowSelectedProps()} />
+              ),
+            },
+            ...columns,
+          ];
+        });
+      },
+      
   );
 
-  const { pageIndex } = state;
+ // const { pageIndex } = state;
 
   useEffect(() => {
     setSelectedRows(selectedFlatRows.map(row => row.original));
   }, [setSelectedRows, selectedFlatRows]);
 
-useEffect(() => {
-if (clickNextPage){
-  nextPage();
-};
-
-if (clickPreviousPage){
-  previousPage();
-};
-
-}, [clickNextPage, clickPreviousPage,])
 
 
   // Render the UI for your table
