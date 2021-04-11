@@ -6,8 +6,13 @@ import "./table.css";
 
 // From https://codesandbox.io/s/github/tannerlinsley/react-table/tree/master/examples/basic?from-embed=&file=/src/App.js:1554-2298
 // Controlled table by parent: https://spectrum.chat/react-table/general/v7-how-get-selected-rows-outside-of-react-table~2deb9558-c484-4b97-9e1c-6be608f1f275
+const useInstance = (instance) => {
+  if (instance && instance.getInstanceCallback) {
+    instance.getInstanceCallback(instance);
+  }
+};
 
-export const GastoTable = ({ columns, data, setSelectedRows }) => {
+export const GastoTable = ({ columns, data, setSelectedRows, clickNextPage, clickPreviousPage, getInstanceCallback }) => {
 
   // Use the state and functions returned from useTable to build your UI
   const {
@@ -23,15 +28,18 @@ export const GastoTable = ({ columns, data, setSelectedRows }) => {
     state,
     prepareRow,
     selectedFlatRows,
+
   } = useTable(
     {
       columns,
       data,
+      getInstanceCallback,  
     },
     usePagination,
     useRowSelect,
     (hooks) => {
-      hooks.visibleColumns.push((columns) => {
+      
+    /*   hooks.visibleColumns.push((columns) => {
         return [
           {
             id: "selection",
@@ -44,7 +52,7 @@ export const GastoTable = ({ columns, data, setSelectedRows }) => {
           },
           ...columns,
         ];
-      });
+      }), */ hooks.useInstance.push(useInstance);
     }
   );
 
@@ -54,9 +62,21 @@ export const GastoTable = ({ columns, data, setSelectedRows }) => {
     setSelectedRows(selectedFlatRows.map(row => row.original));
   }, [setSelectedRows, selectedFlatRows]);
 
+useEffect(() => {
+if (clickNextPage){
+  nextPage();
+};
+
+if (clickPreviousPage){
+  previousPage();
+};
+
+}, [clickNextPage, clickPreviousPage,])
+
+
   // Render the UI for your table
   return (
-    <div className="table-container">
+    <div className="table-container" >
       <table className="scroll" {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
@@ -82,7 +102,7 @@ export const GastoTable = ({ columns, data, setSelectedRows }) => {
           })}
         </tbody>
       </table>
-      <div className="pagination-div">
+      {/* <div className="pagination-div">
         <span>
           Pág.{" "}
           <strong>
@@ -105,7 +125,7 @@ export const GastoTable = ({ columns, data, setSelectedRows }) => {
         >
           Siguiente
         </Button>{" "}
-      </div>
+      </div> */}
 
     </div>
   );

@@ -21,6 +21,10 @@ export const TransactionList = () => {
   const [selectedRows, setSelectedRows] = React.useState([]);
   const { showToast } = useContext(ToastContext);
   const [itemGastoDelMessage, setItemGastoDelMessage] = useState("");
+  const [clickNextPage, setClickNextPage] = React.useState(false);
+  const [clickPreviousPage, setClickPreviousPage] = React.useState(false);
+
+
 
   const currentUser = AuthService.getCurrentUser();
 
@@ -150,20 +154,31 @@ export const TransactionList = () => {
                 alert(_content);
               }
             );
-          };
+          }
           funcCsuGasto();
-          if ( cnt === 1) {
+          if (cnt === 1) {
             showToast({ message: itemGastoDelMessage + " " + cnt + " Item" });
           } else {
             showToast({ message: itemGastoDelMessage + " " + cnt + " Items" });
-          };
+          }
           setItemGastoDelMessage("");
-          
         } else {
           showToast({ message: "No se realizó la Eliminación" });
         }
       });
     }
+  };
+
+  const handleNextPage = () => {
+    setClickNextPage(true);
+  };
+
+  const handlePreviousPage = () => {
+    setClickPreviousPage(true);
+  };
+
+  const reactTableInstance = (instance) => {
+    console.log("Here is the instance", instance);
   };
 
   return (
@@ -189,7 +204,26 @@ export const TransactionList = () => {
                   columns={columns}
                   data={gasto}
                   setSelectedRows={setSelectedRows}
+                  clickNextPage={clickNextPage}
+                  clickPreviousPage={clickPreviousPage}
+                  getInstanceCallback={reactTableInstance}
+
                 />
+                <ButtonGroup size="sm" className="mb-2">
+                  <Button variant="secondary" 
+                  onClick={handlePreviousPage}
+
+                  >
+                    Pág. Anterior
+                  </Button>
+                  <Button 
+                  variant="secondary" 
+                  onClick={handleNextPage}
+
+                  >
+                    Siguiente
+                  </Button>
+                </ButtonGroup>
                 <p>Filas seleccionadas: {selectedRows.length}</p>
                 {/*                 <pre>
                   <code>
