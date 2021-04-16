@@ -136,14 +136,23 @@ export const TransactionList = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           let cnt = 0;
+          var deleteMessageResult = "";
           for (let i = 0; i < selectedRows.length; i++) {
-            //alert(selectedRows[i].cod_gas);
-            cnt += 1;
+            
             var codGasto = selectedRows[i].cod_gas;
             dbCallGasto.eliminarGasto(currentUser.id, codGasto).then(
               (response) => {
-                //Queda el úlitmo mensaje
-                setItemGastoDelMessage(response.data["message"]);
+                cnt += 1;
+                if (selectedRows.length === cnt) {
+                  if (cnt === 1) {
+                    showToast({ message: response.data["message"] + " " + cnt + " Item" });
+                    funcCsuGasto();
+                  } else {
+                    showToast({ message: response.data["message"] + " " + cnt + " Items" });
+                    funcCsuGasto();
+                  };
+                };
+
               },
 
               (error) => {
@@ -157,14 +166,8 @@ export const TransactionList = () => {
                 alert(_content);
               }
             );
-          }
-          funcCsuGasto();
-          if (cnt === 1) {
-            showToast({ message: itemGastoDelMessage + " " + cnt + " Item" });
-          } else {
-            showToast({ message: itemGastoDelMessage + " " + cnt + " Items" });
-          }
-          setItemGastoDelMessage("");
+          };
+
         } else {
           showToast({ message: "No se realizó la Eliminación" });
         }
@@ -186,7 +189,7 @@ export const TransactionList = () => {
 
   const reactTableInstanceSend = (instance) => {
     setReactTableInstance(instance);
-      console.log("Here is the instance", instance);
+    //console.log("Here is the instance", instance);
     setPageIndex(JSON.stringify(instance.state.pageIndex));
     setPageOptions(JSON.stringify(instance.pageOptions.length));
     setCanNextPage(reactTableInstance.canNextPage);
