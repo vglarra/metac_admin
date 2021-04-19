@@ -22,13 +22,13 @@ export const TransactionList = () => {
   const [isEmpty, setIsEmpty] = useState(false);
   const [selectedRows, setSelectedRows] = React.useState([]);
   const { showToast } = useContext(ToastContext);
-  const [itemGastoDelMessage, setItemGastoDelMessage] = useState("");
   const [reactTableInstance, setReactTableInstance] = React.useState([]);
   const [canPreviousPage, setCanPreviousPage] = useState(null);
   const [canNextPage, setCanNextPage] = useState(null);
   const [pageIndex, setPageIndex] = useState(0);
   const [pageOptions, setPageOptions] = useState(0);
   const currentUser = AuthService.getCurrentUser();
+  const [currentBalance, setCurrentBalance] = useState(0);
 
   useEffect(() => {
     funcCsuGasto();
@@ -46,7 +46,11 @@ export const TransactionList = () => {
           var obj = response.data;
           var gastoArray = Object.keys(obj).map((key) => obj[key])[0];
           //setGasto(gastoArray);
-          //alert(JSON.stringify(gastoArray));
+          var balance = 0;
+          for (let i = 0; i < gastoArray.length; i++){
+              balance += gastoArray[i].tgu_mon_gas
+          };
+          setCurrentBalance(balance);
           const data = gastoArray.map((gastos) => ({
             cod_gas: gastos.tgu_cod_gas,
             desc: gastos.ttg_des_gas,
@@ -71,15 +75,20 @@ export const TransactionList = () => {
     );
   };
 
+  const handleBalance = () => {
+    
+
+  };
+
   const monedas = (amount) => {
     // Create our number formatter.
     var formatter = new Intl.NumberFormat("en-US", {
       style: "currency",
       //currency: 'USD',
-      currency: "CLP",
+      currency: "USD",
       // These options are needed to round to whole numbers if that's what you want.
-      //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-      //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+      // minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+      maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
     });
 
     return formatter.format(amount);
@@ -246,6 +255,7 @@ export const TransactionList = () => {
                 </div>
 
                 <p>Filas seleccionadas: {selectedRows.length}</p>
+                <p>Total gasto: -{monedas(currentBalance)}</p>
                 {/*                 <pre>
                   <code>
                     {JSON.stringify(

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UserService from "../services/user.service";
-import bgimage from './images/metaconz_back_land2.jpg';
+import bgimage from './images/metacoinz3.jpg';
+import { Image } from 'react-bootstrap';
 
 
 const Home = () => {
@@ -25,10 +26,13 @@ const Home = () => {
 
   return (
     <div className="container">
-      <header className="jumbotron" style={{ backgroundImage: `url(${bgimage})`, backgroundSize: 'cover', height: 500 }}>
+{/*        <header className="jumbotron" style={{ backgroundImage: `url(${bgimage})`, backgroundSize: 'cover', height: 500 }}>
         <h3 style={{ textAlign: 'right' }}>{content}</h3>
-      </header>
+      </header> */}
+
+      <Image src={bgimage}  style={{ height: 350, paddingLeft: 380 }}/>
     </div>
+
   );
 };
 

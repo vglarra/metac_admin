@@ -18,6 +18,7 @@ import Menu from "./components/hamburger/Menu";
 import MenuItem from "./components/hamburger/MenuItem";
 import Footer from "./components/footer/Footer";
 import "bootstrap/dist/css/bootstrap.min.css";
+import bgimage from './components/images/metaconz_back_land5.jpg';
 import "./App.css";
 
 const listaReducer = ({ elemento }, action) => {
@@ -41,7 +42,9 @@ const App = (props) => {
   let history = useHistory();
 
   useEffect(() => {
-    document.body.style.backgroundColor = "#404040";
+    document.body.style.backgroundImage = `url(${bgimage})`; 
+    document.body.style.backgroundRepeat = "no-repeat";
+    document.body.style.backgroundSize = '100% 100%';
     const user = AuthService.getCurrentUser();
     const newArray = [];
 
@@ -165,12 +168,13 @@ const App = (props) => {
     body: {
       display: "flex",
       flexDirection: "column",
-      alignItems: "center",
+      //alignItems: "center",
+      marginTop: "0px",
       width: "100%",
       height: "100%",
       filter: menuOpen ? "blur(2px)" : null,
       transition: "filter 0.5s ease",
-      paddingTop: "60px",
+      paddingTop: "47px",
     },
   };
   const menuItems = state.elemento.map((val, index) => {

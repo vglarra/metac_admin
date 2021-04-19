@@ -41,7 +41,7 @@ function Expense() {
     <div>
       {isAuthorized ? (
         <GlobalProvider>
-          <Card>
+
             <Header />
             <div className="container">
               <Balance />
@@ -49,7 +49,7 @@ function Expense() {
               <TransactionList />
               <AddTransaction />
             </div>
-          </Card>
+
         </GlobalProvider>
       ) : (
         <header className="jumbotron">
