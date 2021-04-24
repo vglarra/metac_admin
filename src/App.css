@@ -1,6 +1,42 @@
-.container {
-  /* position: absolute; */
+
+.App {
+  height: 100vh;
+  background-size: cover;
+  /* background-repeat: no-repeat; */
+  background-position: center ;
+  background-attachment: fixed; 
+  z-index:0;
+  background-repeat: no-repeat;
+  overflow: auto; /* allows to scroll over background image with out white stripe at the bottom */
+  overscroll-behavior-y: contain; /* omits the footer in cel phones */
+
 }
+
+.App-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 40px;
+}
+
+@media (min-width: 640px ) {
+  .App {
+      background-position: center center;
+  }
+
+  .App-content {
+      align-items: flex-end;
+      justify-content: center;
+  }
+}
+
+
+/* 
+.container {
+  /* position: absolute; 
+} */
 
 
 label {

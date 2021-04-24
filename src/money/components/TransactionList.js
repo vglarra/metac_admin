@@ -13,9 +13,7 @@ import Swal from "sweetalert2";
 import { ToastContext } from "../../global_context/ToastContext";
 import "./transactionLst.css";
 
-
 export const TransactionList = () => {
-
   const [gasto, setGasto] = useState([]);
   const { updateService, revStateGastoLst } = useContext(GlobalContext);
   const [emptyMessage, setEmptyMessage] = useState("");
@@ -34,7 +32,6 @@ export const TransactionList = () => {
     funcCsuGasto();
   }, [updateService.refreshStateGasto]);
 
-
   const funcCsuGasto = () => {
     dbCallGasto.postCsuGasto(currentUser.id).then(
       (response) => {
@@ -47,9 +44,9 @@ export const TransactionList = () => {
           var gastoArray = Object.keys(obj).map((key) => obj[key])[0];
           //setGasto(gastoArray);
           var balance = 0;
-          for (let i = 0; i < gastoArray.length; i++){
-              balance += gastoArray[i].tgu_mon_gas
-          };
+          for (let i = 0; i < gastoArray.length; i++) {
+            balance += gastoArray[i].tgu_mon_gas;
+          }
           setCurrentBalance(balance);
           const data = gastoArray.map((gastos) => ({
             cod_gas: gastos.tgu_cod_gas,
@@ -75,10 +72,7 @@ export const TransactionList = () => {
     );
   };
 
-  const handleBalance = () => {
-    
-
-  };
+  const handleBalance = () => {};
 
   const monedas = (amount) => {
     // Create our number formatter.
@@ -147,21 +141,23 @@ export const TransactionList = () => {
           let cnt = 0;
           var deleteMessageResult = "";
           for (let i = 0; i < selectedRows.length; i++) {
-            
             var codGasto = selectedRows[i].cod_gas;
             dbCallGasto.eliminarGasto(currentUser.id, codGasto).then(
               (response) => {
                 cnt += 1;
                 if (selectedRows.length === cnt) {
                   if (cnt === 1) {
-                    showToast({ message: response.data["message"] + " " + cnt + " Item" });
+                    showToast({
+                      message: response.data["message"] + " " + cnt + " Item",
+                    });
                     funcCsuGasto();
                   } else {
-                    showToast({ message: response.data["message"] + " " + cnt + " Items" });
+                    showToast({
+                      message: response.data["message"] + " " + cnt + " Items",
+                    });
                     funcCsuGasto();
-                  };
-                };
-
+                  }
+                }
               },
 
               (error) => {
@@ -175,8 +171,7 @@ export const TransactionList = () => {
                 alert(_content);
               }
             );
-          };
-
+          }
         } else {
           showToast({ message: "No se realizó la Eliminación" });
         }
@@ -205,7 +200,6 @@ export const TransactionList = () => {
     setCanPreviousPage(reactTableInstance.canPreviousPage);
   };
 
-
   return (
     <>
       <Container>
@@ -230,32 +224,34 @@ export const TransactionList = () => {
                   data={gasto}
                   setSelectedRows={setSelectedRows}
                   getInstanceCallback={reactTableInstanceSend}
-
                 />
 
-                <div className="-pagination" >
-                  <button className="-btn -previous"
+                <div className="-pagination">
+                  <button
+                    className="-btn -previous"
                     onClick={handlePreviousPage}
                     disabled={!canPreviousPage}
                   >
                     <strong>{"<"}</strong>
-                  </button>{' '}
+                  </button>{" "}
                   <span className="-pageInfo">
-                  Pág.{' '}
-                  <strong>
-                    {parseInt(pageIndex) + 1} de {pageOptions}
-                  </strong>
-                </span>{' '}
-                  <button className="-btn -next"
+                    Pág.{" "}
+                    <strong>
+                      {parseInt(pageIndex) + 1} de {pageOptions}
+                    </strong>
+                  </span>{" "}
+                  <button
+                    className="-btn -next"
                     onClick={handleNextPage}
                     disabled={!canNextPage}
                   >
-                   <strong>{">"}</strong>
+                    <strong>{">"}</strong>
                   </button>
                 </div>
 
                 <p>Filas seleccionadas: {selectedRows.length}</p>
                 <p>Total gasto: -{monedas(currentBalance)}</p>
+                
                 {/*                 <pre>
                   <code>
                     {JSON.stringify(

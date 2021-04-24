@@ -18,7 +18,8 @@ import Menu from "./components/hamburger/Menu";
 import MenuItem from "./components/hamburger/MenuItem";
 import Footer from "./components/footer/Footer";
 import "bootstrap/dist/css/bootstrap.min.css";
-import bgimage from './components/images/metaconz_back_land5.jpg';
+import desktopImage from './components/images/metaconz_back_land8.jpg';
+import mobileImage from './components/images/metaconz_back_Cel1.jpg';
 import "./App.css";
 
 const listaReducer = ({ elemento }, action) => {
@@ -32,7 +33,8 @@ const listaReducer = ({ elemento }, action) => {
   }
 };
 
-const App = (props) => {
+const App = () => {
+  const imageUrl = useWindowWidth() >= 640 ? desktopImage : mobileImage;
   const { showToast } = useContext(ToastContext);
   const { resetService, resetOn, buttonMenuOn, updateMenuLenght } = useContext(ContextApp);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -42,9 +44,9 @@ const App = (props) => {
   let history = useHistory();
 
   useEffect(() => {
-    document.body.style.backgroundImage = `url(${bgimage})`; 
-    document.body.style.backgroundRepeat = "no-repeat";
-    document.body.style.backgroundSize = '100% 100%';
+    //document.body.style.backgroundImage = `url(${bgimage})`; 
+    //document.body.style.backgroundRepeat = "no-repeat";
+    //document.body.style.backgroundSize = '100% 100%';
     const user = AuthService.getCurrentUser();
     const newArray = [];
 
@@ -199,7 +201,7 @@ const App = (props) => {
   };
 
   return (
-    <div>
+    <div className="App" style={{ backgroundImage: `url(${imageUrl})` }}>
       <div>
         <div style={styles.container}>
           <MenuButton onClick={handleMenuClick} color={"#6bff6b"} />
@@ -216,7 +218,7 @@ const App = (props) => {
           </div>
         </div>
         <Menu open={menuOpen}>{menuItems}</Menu>
-        <div style={styles.body}>
+        <div style={styles.body} >
           <Switch>
           <Route exact path={["/", "/login"]} component={Login} />
             {/* <Route exact path={["/", "/home"]} component={Home} /> */}
@@ -236,6 +238,21 @@ const App = (props) => {
       </div>
     </div>
   );
+};
+
+const useWindowWidth = () => {
+  const [windowWidth, setWindowWidth ] = useState(window.innerWidth);
+
+  useEffect(() => {
+      const handleWindowResize = () => {
+          setWindowWidth(window.innerWidth);
+      };
+
+      window.addEventListener('resize', handleWindowResize);
+      return () => window.removeEventListener('resize', handleWindowResize);
+  },[]);
+
+  return windowWidth;
 };
 
 export default App;

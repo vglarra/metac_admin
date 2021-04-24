@@ -1,9 +1,14 @@
-import React from 'react'
+import React from "react";
+import { Container, Row, Col } from 'react-bootstrap'
 
 export const Header = () => {
   return (
-    <h2>
-      Money
-    </h2>
-  )
-}
+    <Container>
+      <Row>
+        <Col>
+          <h2 style={{ textAlign: "left" }}>money</h2>
+        </Col>
+      </Row>
+    </Container>
+  );
+};

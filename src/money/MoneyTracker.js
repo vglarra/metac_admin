@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Header } from './components/Header';
-import { Balance } from './components/Balance';
-import { IncomeExpenses } from './components/IncomeExpenses';
-import { TransactionList } from './components/TransactionList';
-import { AddTransaction } from './components/AddTransaction';
-import { Card } from 'react-bootstrap'
+import { Header } from "./components/Header";
+import { Balance } from "./components/Balance";
+import { IncomeExpenses } from "./components/IncomeExpenses";
+import { TransactionList } from "./components/TransactionList";
+import { AddTransaction } from "./components/AddTransaction";
+import { Container } from "react-bootstrap";
 import UserService from "../services/user.service";
 
+import { GlobalProvider } from "./context/MoneyGlobalState";
 
-import { GlobalProvider } from './context/MoneyGlobalState';
-
-import '../App.css';
+import "../App.css";
 
 function Expense() {
   const [content, setContent] = useState("");
@@ -29,27 +28,23 @@ function Expense() {
             error.response.data.message) ||
           error.message ||
           error.toString();
-          setIsAuthorized(false);
+        setIsAuthorized(false);
         setContent(_content);
       }
     );
   }, []);
 
-
-
   return (
     <div>
       {isAuthorized ? (
         <GlobalProvider>
-
+          <Container>
             <Header />
-            <div className="container">
-              <Balance />
-              <IncomeExpenses />
-              <TransactionList />
-              <AddTransaction />
-            </div>
-
+            <Balance />
+            <IncomeExpenses />
+            <TransactionList />
+            <AddTransaction /> 
+          </Container>
         </GlobalProvider>
       ) : (
         <header className="jumbotron">

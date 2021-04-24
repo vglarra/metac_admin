@@ -3,6 +3,7 @@ import { Col } from "react-bootstrap";
 import { Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { GlobalContext } from "../context/MoneyGlobalState";
 import dbCallTipoGasto from "../../services/db-services/user.tipoGasto.model";
 import dbCallGasto from "../../services/db-services/user.gasto.model";
@@ -101,7 +102,7 @@ export const AddTransaction = () => {
   };
 
   return (
-    <div className="container">
+    <Container>
       <Form onSubmit={validateAddTransaction}>
         <Form.Row>
           <Col>
@@ -166,6 +167,6 @@ export const AddTransaction = () => {
         onHide={() => setModalShow(false)}
         tipo_gasto_modal={tipoGasto}
       />
-    </div>
+    </Container>
   );
 };
